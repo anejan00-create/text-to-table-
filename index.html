@@ -50,7 +50,7 @@
 
   <button onclick="convertText()">تبدیل به جدول</button>
   <button onclick="downloadCSV()">دانلود جدول</button>
-
+<button onclick="copyTable()">کپی جدول</button>
   <div id="output"></div>
 
   <script>
@@ -112,6 +112,21 @@ const lines = text.split(/\r?\n/).filter(line => line.trim());
       link.download = "table.csv";
       link.click();
       URL.revokeObjectURL(url);
+    }
+        async function copyTable() {
+      if (!rows.length) {
+        alert("ابتدا متن را به جدول تبدیل کنید.");
+        return;
+      }
+
+      const text = rows.map(row => row.join("\t")).join("\n");
+
+      try {
+        await navigator.clipboard.writeText(text);
+        alert("جدول کپی شد.");
+      } catch (error) {
+        alert("کپی خودکار انجام نشد. لطفاً سایت را در مرورگر باز کنید.");
+      }
     }
   </script>
 </body>
