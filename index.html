@@ -65,16 +65,19 @@
         rows = [];
         return;
       }
-
-      const lines = text.split(/\r?\n/).filter(line => line.trim());
-
-if (lines.some(line => line.trim().includes("|"))) {
+const lines = text.split(/\r?\n/).filter(line => line.trim());
+      if (lines.some(line => line.includes("|"))) {
   rows = lines
-    .filter(line => !/^\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?$/.test(line.trim()))
+    .filter(line => !line.replace(/\|/g, "").trim().match(/^:?-{3,}:?(\s*\|?\s*:?-{3,}:?)*$/))
     .map(line => line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map(cell => cell.trim()));
 } else {
   rows = lines.map(line => line.split(/[,،]/).map(cell => cell.trim()));
 }
+
+
+
+  
+
       const table = document.createElement("table");
 
       rows.forEach((row, index) => {
